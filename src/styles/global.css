@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'Bebas';
+  src: url('/fonts/BebasNeue-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'JetBrains';
+  src: url('/fonts/JetBrainsMono-Regular.ttf');
+}
+
+h1 {
+    font-family: 'Bebas';
+    text-transform: uppercase;
+}

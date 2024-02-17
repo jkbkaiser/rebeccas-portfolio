@@ -1,0 +1,61 @@
+---
+import '../styles/global.css';
+const pageTitle = "Rebecca's Portfolio";
+---
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{pageTitle}</title>
+        <style>
+            .container {
+                margin-top: 50px;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+            }
+            h1 {
+                line-height: 0.9;
+                margin-left: 50px;
+                margin-top: 0px;
+                font-size: 7em;
+                color: #7B674D;
+                width: 0cm;
+            }
+            .navigation {
+                margin-right: 50px;
+                display: flex;
+                flex-direction: column;
+                text-align: end;
+            }
+            a {
+                color: black;
+                font-size: 3em;
+                font-family: "Bebas";
+                text-decoration: none;
+            }
+            body {
+                background-image: url('https://storage.googleapis.com/rebeccas_portfolio/images/index/background.jpg');
+                background-repeat: no-repeat;
+                background-attachment: fixed;
+                background-size: cover;
+                background-position: center;
+            }
+        </style>
+	</head>
+	<body>
+        <div class="container">
+            <div class="header">
+                <h1>REBECCA ANAIS KAISER</h1>
+            </div>
+            <div class="navigation">
+                <a href="/galleries/">Galleries</a>
+                <a href="/about/">About</a>
+                <a href="/contact/">Contact</a>
+            </div>
+        </div>
+	</body>
+</html>
