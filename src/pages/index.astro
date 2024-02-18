@@ -12,30 +12,44 @@ const pageTitle = "Rebecca's Portfolio";
 		<title>{pageTitle}</title>
         <style>
             .container {
-                margin-top: 50px;
+                margin-top: 3%;
+                min-height: 50%;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
             }
+            .header {
+                margin-left: 3%;
+                min-width: 50%;
+                min-height: 100%;
+            }
             h1 {
                 line-height: 0.9;
-                margin-left: 50px;
-                margin-top: 0px;
-                font-size: 7em;
+                margin: 0;
+                font-size: 10vh;
                 color: #7B674D;
                 width: 0cm;
             }
             .navigation {
-                margin-right: 50px;
+                margin-right: 3%;
                 display: flex;
                 flex-direction: column;
                 text-align: end;
             }
             a {
                 color: black;
-                font-size: 3em;
+                font-size: 5vh;
                 font-family: "Bebas";
                 text-decoration: none;
+            }
+            p {
+                padding: 0;
+                margin: 0;
+                margin-top: 10px;
+                transition: transform 1.5s ease-out;
+            }
+            p:hover {
+                font-weight: 1000;
             }
             body {
                 background-image: url('https://storage.googleapis.com/rebeccas_portfolio/images/index/background.jpg');
@@ -43,6 +57,36 @@ const pageTitle = "Rebecca's Portfolio";
                 background-attachment: fixed;
                 background-size: cover;
                 background-position: center;
+
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                padding: 0;
+                margin: 0;
+            }
+            .hover-underline-animation {
+              display: inline-block;
+              position: relative;
+            }
+
+            .hover-underline-animation::after {
+              content: '';
+              position: absolute;
+              width: 100%;
+              transform: scaleX(0);
+              height: 2px;
+              bottom: 0;
+              left: 0;
+              background-color: #000000;
+              transform-origin: bottom right;
+              transition: transform 0.5s ease-out;
+            }
+
+            .hover-underline-animation:hover::after {
+              transform: scaleX(1);
+              transform-origin: bottom left;
             }
         </style>
 	</head>
@@ -52,9 +96,9 @@ const pageTitle = "Rebecca's Portfolio";
                 <h1>REBECCA ANAIS KAISER</h1>
             </div>
             <div class="navigation">
-                <a href="/galleries/">Galleries</a>
-                <a href="/about/">About</a>
-                <a href="/contact/">Contact</a>
+                <a href="/galleries/"><p class="hover-underline-animation">Galleries</p></a>
+                <a href="/about/"><p class="hover-underline-animation">About</p></a>
+                <a href="/contact/"><p class="hover-underline-animation">Contact</p></a>
             </div>
         </div>
 	</body>
