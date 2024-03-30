@@ -1,0 +1,32 @@
+---
+import { Breadcrumb } from 'astro-bootstrap';
+
+const { page_name } = Astro.params;
+const { frontmatter } = Astro.props; const background_color = frontmatter.background_color;
+const images = frontmatter.images;
+const slideshow_style = frontmatter.slideshow_style;
+
+export async function getStaticPaths() {
+    function get_pagename_from_filename(filename) {
+        return filename.split("/").slice(-1)[0].split(".md")[0];
+    }
+
+    const all_galleries = await Astro.glob("../galleries/*.md");
+
+    let paths = all_galleries.map((gallery) => {
+        return {
+            params: { slide_show: get_pagename_from_filename(gallery.file) },
+            props: {frontmatter: gallery.frontmatter},
+        };
+    });
+
+    return paths;
+}
+---
+<html>
+    <style define:vars={{ background_color }}>
+        html {
+            background-color: var(--background_color);
+        }
+    </style>
+</html>

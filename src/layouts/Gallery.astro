@@ -1,0 +1,93 @@
+---
+import "../styles/global.css";
+const { frontmatter } = Astro.props;
+const row_size = frontmatter.row_size;
+const background_color = frontmatter.background_color;
+
+type Image = {
+    url: string;
+    alt: string;
+};
+
+// Map the images into columns.
+const columns: Image[][] = [];
+for (let i = 0; i < row_size; i += 1) {
+    columns.push([]);
+}
+
+for (let i = 0; i < frontmatter.images.length; i += 1) {
+    columns[i % row_size].push(frontmatter.images[i]);
+}
+
+function get_pagename_from_filename(filename: string) {
+    return filename.split("/").slice(-1)[0].split(".md")[0];
+}
+
+const page_name = get_pagename_from_filename(frontmatter.file);
+const slide_show_url = `../slide-shows/${page_name}`;
+---
+
+<html>
+    <style define:vars={{ background_color }}>
+        html {
+            background-color: var(--background_color);
+        }
+        .heading :global(h1) {
+            font-size: 10vh;
+            text-align: right;
+        }
+        .heading :global(p) {
+            font-family: "JetBrains";
+            font-size: 1.5em;
+            height: fit-content;
+            width: 50%;
+        }
+        .heading {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+        .gallery {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            align-items: start;
+        }
+        .gallery_column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            width: 100%;
+        }
+        .gallery_img {
+            margin: 10%;
+        }
+        img {
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+
+    <div class="heading">
+        <slot />
+    </div>
+
+    <div class="gallery">
+        {
+            columns.map((images) => (
+                <div class="gallery_column">
+                    {images.map((img: Image) => (
+                        <div class="gallery_img">
+                            <a href={slide_show_url}>
+                                <img src={img.url} />
+                            </a>
+                        </div>
+                    ))}
+                </div>
+            ))
+        }
+    </div>
+
+
+</html>
