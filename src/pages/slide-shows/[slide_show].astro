@@ -1,13 +1,19 @@
 ---
+// TODO
+// - update on click on neighbouring images
+// - speedup
 import circle from "../../icon/circle.svg";
 import circle_fill from "../../icon/circle-fill.svg";
+import arrow_left from "../../icon/arrow-left.svg";
 
-const { page_name } = Astro.params;
+const { slide_show } = Astro.params;
 const { frontmatter } = Astro.props;
+
 var selected = 0;
 const background_color = frontmatter.background_color;
 const images = frontmatter.images;
-const slideshow_style = frontmatter.slideshow_style;
+const slide_show_style = frontmatter.slide_show_style;
+const gallery_url = `../galleries/${slide_show}`;
 
 export async function getStaticPaths() {
     function get_pagename_from_filename(filename) {
@@ -29,12 +35,19 @@ export async function getStaticPaths() {
 
 <html>
     <style define:vars={{ background_color }}>
-        html {
+        html, body {
+            position: fixed;
+            height: 100%;
+            width: 100%;
+            left: 0;
+            right: 0;
+            padding: 0;
+            margin: 0;
             background-color: var(--background_color);
         }
         .navigation {
             width: 50%;
-            height: 3%;
+            height: 5vh;
 
             position: absolute;
             left: 50%;
@@ -47,50 +60,187 @@ export async function getStaticPaths() {
             align-items: center;
         }
         button {
-            aspect-ratio: 1 / 1;
-            margin: 2vw;
+            margin: 0 2vw;
+            height: 5vh;
+            width: 5vh;
+            padding: 0;
             border: none;
             background: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
-        .unselected {
+        .icon_wrapper_unselected {
             height: 50%;
         }
-        .selected {
+        .icon_wrapper_selected {
             height: 75%;
         }
-        img {
-            display: block;
+        .icon_wrapper_unselected img {
             height: 100%;
         }
+        .icon_wrapper_selected img {
+            height: 100%;
+        }
+        .back {
+            height: 5vh;
+            width: 5vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            position: absolute;
+            left: 100px;
+            top: 90%;
+        }
+        .back img {
+            height: 5vh;
+            width: 5vh;
+        }
+        .display {
+            height: 70%;
+            width: 100%;
+
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            transform: translate(-50%, -50%);
+        }
+        .display img {
+            height: 100%;
+        }
+        .image_left {
+            height: 50%;
+            width: fit-content;
+
+            position: absolute;
+            top: 50%;
+            left: 0px;
+            transform: translate(-80%, -50%);
+        }
+        .image_center {
+            height: 100%;
+            width: fit-content;
+
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .image_right {
+            height: 50%;
+            width: fit-content;
+
+            position: absolute;
+            top: 50%;
+            right: 0px;
+            transform: translate(80%, -50%);
+        }
     </style>
-    <div class="navigation">
-        {images.map((_, index) => {
-            return index == selected ?
-                <button class="selected"><img src={circle.src} alt="selected" /></button>
-                :
-                <button class="unselected"><img src={circle_fill.src} alt="unselected" /></button>
-        })}
+
+    <div class="display">
+        <div class="image_left">
+            <img/>
+                <!-- src={images[0].url} -->
+        </div>
+        <div class="image_center">
+            <img src={images[0].url}/>
+        </div>
+        <div class="image_right">
+            <img src={images[1].url}/>
+        </div>
     </div>
 
-    <script>
-        // Find all buttons with the `unselected` class on the page.
-        const unselected_buttons = document.querySelectorAll('button.unselected');
+    <div class="back">
+        <a href={gallery_url} ><img src={arrow_left.src}/></a>
+    </div>
+
+    <div class="navigation">
+        {images.map((_, index) => (
+            <button id={index} class="menu_button">
+                <div class="icon_wrapper_unselected">
+                    <img src={circle_fill.src} alt="nav" />
+                </div>
+            </button>
+        ))}
+    </div>
+
+    <script define:vars={{ selected, circle_fill, circle, images }}>
+        var s = selected;
+
+        // Select all buttons.
+        const buttons = document.querySelectorAll('button.menu_button');
+        const img_left = document.querySelectorAll('div.image_left')[0];
+        const img_center = document.querySelectorAll('div.image_center')[0];
+        const img_right = document.querySelectorAll('div.image_right')[0];
+
+        var max = buttons.length;
+
+        // Set initial selected image as selected.
+        buttons[s].children[0].children[0].src = circle.src;
+        buttons[s].children[0].className = "icon_wrapper_selected";
+
+        function change_selection(new_button_id) {
+            if (new_button_id < 0 || max <= new_button_id) {
+                return;
+            }
+
+            s = new_button_id;
+            update_navigation();
+            update_slides();
+        }
+
+        function update_navigation() {
+            var curr_selected = document.querySelectorAll('div.icon_wrapper_selected')[0];
+
+            // Unselect selected.
+            curr_selected.children[0].src = circle_fill.src;
+            curr_selected.className = "icon_wrapper_unselected";
+
+            // Set new selected image as selected.
+            buttons[s].children[0].children[0].src = circle.src;
+            buttons[s].children[0].className = "icon_wrapper_selected";
+        }
+
+        function update_slides() {
+            if (s == 0) {
+                img_left.children[0].src = "";
+                img_center.children[0].src = images[s].url;
+                img_right.children[0].src = images[s+1].url;
+            } else if (s == max-1) {
+                img_left.children[0].src = images[s-1].url;
+                img_center.children[0].src = images[s].url;
+                img_right.children[0].src = "";
+            } else {
+                img_left.children[0].src = images[s-1].url;
+                img_center.children[0].src = images[s].url;
+                img_right.children[0].src = images[s+1].url;
+            }
+        }
 
         // Handle clicks on each button.
-        unselected_buttons.forEach((button) => {
+        buttons.forEach((button) => {
           button.addEventListener('click', () => {
-            alert('Unselected button was clicked!');
+            change_selection(parseInt(button.id, 10));
           });
         });
 
-        // Find all buttons with the `selected` class on the page.
-        const selected_buttons = document.querySelectorAll('button.selected');
+        img_left.addEventListener('click', () => {
+            change_selection(s-1);
+        });
 
-        // Handle clicks on each button.
-        selected_buttons.forEach((button) => {
-          button.addEventListener('click', () => {
-            alert('Selected button was clicked!');
-          });
+        img_right.addEventListener('click', () => {
+            change_selection(s+1);
+        });
+
+        window.addEventListener('keydown', (event) => {
+            if (event.key === "ArrowLeft") {
+                change_selection(s - 1);
+            }
+            if (event.key === "ArrowRight") {
+                change_selection(s + 1);
+            }
         });
 
     </script>
