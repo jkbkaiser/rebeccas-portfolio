@@ -1,15 +1,15 @@
 ---
-import '../styles/global.css';
+import "../styles/global.css";
 const pageTitle = "Rebecca's Portfolio";
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{pageTitle}</title>
         <style>
             .container {
                 margin-top: 3%;
@@ -27,7 +27,7 @@ const pageTitle = "Rebecca's Portfolio";
                 line-height: 0.9;
                 margin: 0;
                 font-size: 10vh;
-                color: #7B674D;
+                color: #7b674d;
                 width: 0cm;
             }
             .navigation {
@@ -51,8 +51,9 @@ const pageTitle = "Rebecca's Portfolio";
             p:hover {
                 font-weight: 1000;
             }
+
             body {
-                background-image: url('https://storage.googleapis.com/rebeccas_portfolio/images/index/background.jpg');
+                background-image: url("https://storage.googleapis.com/rebeccas_portfolio/images/index/background.jpg");
                 background-repeat: no-repeat;
                 background-attachment: fixed;
                 background-size: cover;
@@ -66,40 +67,47 @@ const pageTitle = "Rebecca's Portfolio";
                 padding: 0;
                 margin: 0;
             }
+
             .hover-underline-animation {
-              display: inline-block;
-              position: relative;
+                display: inline-block;
+                position: relative;
             }
 
             .hover-underline-animation::after {
-              content: '';
-              position: absolute;
-              width: 100%;
-              transform: scaleX(0);
-              height: 2px;
-              bottom: 0;
-              left: 0;
-              background-color: #000000;
-              transform-origin: bottom right;
-              transition: transform 0.5s ease-out;
+                content: "";
+                position: absolute;
+                width: 100%;
+                transform: scaleX(0);
+                height: 2px;
+                bottom: 0;
+                left: 0;
+                background-color: #000000;
+                transform-origin: bottom right;
+                transition: transform 0.5s ease-out;
             }
 
             .hover-underline-animation:hover::after {
-              transform: scaleX(1);
-              transform-origin: bottom left;
+                transform: scaleX(1);
+                transform-origin: bottom left;
             }
         </style>
-	</head>
-	<body>
+    </head>
+    <body>
         <div class="container">
             <div class="header">
                 <h1>REBECCA ANAIS KAISER</h1>
             </div>
             <div class="navigation">
-                <a href="/galleries/"><p class="hover-underline-animation">Galleries</p></a>
-                <a href="/about/"><p class="hover-underline-animation">About</p></a>
-                <a href="/contact/"><p class="hover-underline-animation">Contact</p></a>
+                <a href="/galleries/"
+                    ><p class="hover-underline-animation">Galleries</p></a
+                >
+                <a href="/about/"
+                    ><p class="hover-underline-animation">About</p></a
+                >
+                <a href="/contact/"
+                    ><p class="hover-underline-animation">Contact</p></a
+                >
             </div>
         </div>
-	</body>
+    </body>
 </html>

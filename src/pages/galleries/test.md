@@ -1,11 +1,11 @@
 ---
 layout: './../../layouts/Gallery.astro'
 row_size: 3
-background_color: '#ffe5e5'
+background_color: 'black'
 slideshow_style: 'default'
 images: [
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: 'https://storage.googleapis.com/rebeccas_portfolio/about/background.jpg',
         alt: 'The full Astro logo.'
     },
     {
@@ -28,7 +28,7 @@ images: [
 ]
 ---
 
-# Born,<br/>never asked
+# Test
 
 Integer vulputate consectetur dolor. Ut scelerisque fringilla libero, eu rhoncus arcu finibus ultricies.
 Nam finibus malesuada magna non consequat. Duis varius eros interdum lorem interdum aliquam.
