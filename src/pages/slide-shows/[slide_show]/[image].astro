@@ -15,8 +15,8 @@ const image_center = image_id == 0 ? images[0].url : images[1].url;
 const image_right =
     image_id != 0 && images.length == 2 ? "" : images[images.length - 1].url;
 
-const gallery_url = `../../galleries/${slide_show}`;
-const base_url = `../../slide-shows/${slide_show}`;
+const gallery_url = `../galleries/${slide_show}`;
+const base_url = `../slide-shows/${slide_show}`;
 
 type Image = {
     url: string;
