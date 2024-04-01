@@ -1,23 +1,23 @@
 ---
 layout: './../../layouts/Gallery.astro'
-row_size: 3
+row_size: 2
 background_color: '#ffe5e5'
-slideshow_style: 'default'
+slide_show_style: 'default'
 images: [
     {
         url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-eggum.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-micromose.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-treestructures.jpg',
         alt: 'The full Astro logo.'
     },
     {
