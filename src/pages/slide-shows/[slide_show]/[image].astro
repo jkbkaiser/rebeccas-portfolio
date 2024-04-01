@@ -1,7 +1,7 @@
 ---
 // TODO
 // Custom layout
-import { ViewTransitions, fade} from "astro:transitions";
+import { ViewTransitions } from "astro:transitions";
 import circle from "../../../icon/circle.svg";
 import circle_fill from "../../../icon/circle-fill.svg";
 import arrow_left from "../../../icon/arrow-left.svg";
@@ -17,16 +17,35 @@ const image_right = image_id != 0 && images.length == 2 ? "" : images[images.len
 const gallery_url = `../../galleries/${slide_show}`;
 const base_url = `../../slide-shows/${slide_show}`;
 
-console.log(base_url);
+type Image = {
+    url: string;
+    alt: string;
+}
+
+type PathParams = {
+    slide_show: string;
+    image: string;
+}
+
+type PathProps = {
+    background_color: string;
+    images: Image[];
+    total_images: number;
+}
+
+type Path = {
+  params: PathParams;
+  props: PathProps;
+};
 
 export async function getStaticPaths() {
-    function get_pagename_from_filename(filename) {
+    function get_pagename_from_filename(filename: string) {
         return filename.split("/").slice(-1)[0].split(".md")[0];
     }
 
     const all_galleries = await Astro.glob("../../galleries/*.md");
 
-    let paths = [];
+    let paths: Path[] = [];
     for (const gallery of all_galleries) {
         var images = gallery.frontmatter.images;
         var image_groups = [];
@@ -177,8 +196,9 @@ export async function getStaticPaths() {
     <title>{(slide_show[0].toUpperCase() + slide_show.slice(1)).replace(/\-/g, " ")}</title>
     </head>
 
-    <div class="display" transition:animate={fade({ duration: '0.2s' })}>
-        <div id="image_left">
+    <!-- <div class="display" transition:animate={fade({ duration: '0.2s' })} > -->
+    <div class="display" >
+        <div id="image_left" >
             {
                 image_id != 0 ?
                     <a href={`${base_url}/${image_id-1}`}>
@@ -188,10 +208,10 @@ export async function getStaticPaths() {
                     <img src={image_left}/>
             }
         </div>
-        <div id="image_center">
+        <div id="image_center" transition:name="exp" >
             <img src={image_center}/>
         </div>
-        <div id="image_right">
+        <div id="image_right" transition:name="exp" >
             {
                 image_id < total_images ?
                     <a href={`${base_url}/${image_id+1}`}>
@@ -210,7 +230,7 @@ export async function getStaticPaths() {
 
     <div class="navigation">
         {
-            Array.from({length: total_images}, (x, i) => {
+            Array.from({length: total_images}, (_, i) => {
                 return (i == image_id ?
                     <a href={`${base_url}/${i}`} class="menu_button">
                         <div class="icon_wrapper_selected">
@@ -242,12 +262,16 @@ export async function getStaticPaths() {
             constructor() {
                 super();
 
+                if (this.dataset.imageid === undefined || this.dataset.totalimages === undefined) {
+                    return;
+                }
+
                 var imageId = parseInt(this.dataset.imageid, 10);
                 var totalImages = parseInt(this.dataset.totalimages, 10);
                 var baseUrl = this.dataset.baseurl;
                 pressed = false;
 
-                function onClick(event) {
+                function onClick(event: any) {
                     if (pressed) {
                         return false;
                     }

@@ -10,13 +10,13 @@ type Image = {
 };
 
 // Map the images into columns.
-const columns: Image[][] = [];
+const columns: [Image, number][][] = [];
 for (let i = 0; i < row_size; i += 1) {
     columns.push([]);
 }
 
 for (let i = 0; i < frontmatter.images.length; i += 1) {
-    columns[i % row_size].push(frontmatter.images[i]);
+    columns[i % row_size].push([frontmatter.images[i], i]);
 }
 
 function get_pagename_from_filename(filename: string) {
@@ -77,9 +77,9 @@ const slide_show_url = `../slide-shows/${page_name}`;
         {
             columns.map((images) => (
                 <div class="gallery_column">
-                    {images.map((img: Image) => (
+                    {images.map(([img, index]) => (
                         <div class="gallery_img">
-                            <a href={slide_show_url}>
+                            <a href={`${slide_show_url}/${index}`}>
                                 <img src={img.url} />
                             </a>
                         </div>
