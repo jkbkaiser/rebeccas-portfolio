@@ -1,69 +1,61 @@
 ---
-const { galleryImgSrc, galleryUrl, lines } = Astro.props;
+const { galleryUrl, lines } = Astro.props;
 ---
+
 <style>
-.gallery_frame_outside {
-    border: 3px solid black;
-    box-shadow: 5px 5px 2px rgba(0, 0, 0, 0.2);
+    .gallery_frame_outside {
+        border: 3px solid black;
+        box-shadow: 5px 5px 2px rgba(0, 0, 0, 0.2);
 
-    min-width: 38vh;
-    width: 38vh;
-    height: 38vh;
-    position: relative;
-}
-.gallery_frame_inside {
-    height: 80%;
-    width: 80%;
+        min-width: 38vh;
+        width: 38vh;
+        height: 38vh;
+        position: relative;
+    }
+    .gallery_frame_inside {
+        height: 80%;
+        width: 80%;
 
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
 
-    overflow: hidden;
-}
+        overflow: hidden;
+    }
 
-.gallery_frame_outside:hover .gallery_image {
-    filter: blur(2px);
-    -webkit-filter: blur(2px);
-}
+    .gallery_frame_outside:hover :global(img) {
+        filter: blur(2px);
+        -webkit-filter: blur(2px);
+    }
 
-.gallery_name {
-    flex-direction: column;
-    display: flex;
-    justify-content: center;
-    z-index: 999;
-    height: 100%;
-    width:  100%;
-    position: absolute;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
-
-.gallery_image {
-    object-fit: cover;
-    height: 100%;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    transition: 1.5s;
-}
-p {
-    padding: 0;
-    margin: 0;
-    font-size: 3em;
-    text-align: center;
-    font-family: "Bebas";
-    opacity: 0;
-    transition: 1.5s;
-    color: black;
-}
-.gallery_display:hover p {
-    opacity: 100;
-}
+    .gallery_name {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        z-index: 999;
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    p {
+        padding: 0;
+        margin: 0;
+        font-size: 3em;
+        text-align: center;
+        font-family: "Bebas";
+        opacity: 0;
+        transition: 1.5s;
+        color: black;
+    }
+    .gallery_display:hover p {
+        opacity: 100;
+    }
 </style>
 
 <div class="gallery_display">
@@ -73,7 +65,7 @@ p {
                 <div class="gallery_name">
                     {lines.map((line: string) => <p>{line}</p>)}
                 </div>
-                <img src={galleryImgSrc} class="gallery_image"> <img>
+                <slot />
             </div>
         </div>
     </a>

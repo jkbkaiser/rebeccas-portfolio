@@ -1,6 +1,15 @@
 ---
+import { ViewTransitions } from "astro:transitions";
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
 import "../styles/global.css";
+
 const pageTitle = "Rebecca's Portfolio";
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/images/*.{jpeg,jpg,png,gif}",
+);
+const imgPaths = Object.keys(images);
 ---
 
 <html lang="en">
@@ -53,12 +62,6 @@ const pageTitle = "Rebecca's Portfolio";
             }
 
             body {
-                background-image: url("https://storage.googleapis.com/rebeccas_portfolio/images/index/background.jpg");
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: cover;
-                background-position: center;
-
                 position: fixed;
                 width: 100%;
                 height: 100%;
@@ -91,13 +94,34 @@ const pageTitle = "Rebecca's Portfolio";
                 transform-origin: bottom left;
             }
         </style>
+        <ViewTransitions />
     </head>
     <body>
+        {imgPaths.map((path, index) => {
+            let style = "\
+                position: absolute;\
+                top: 0;\
+                bottom:0;\
+                height: 100%;\
+                width: 100%;\
+                margin: 0%;\
+                object-fit: cover;\
+                opacity: 0;\
+            "
+            return <Image
+                id=`background-img-${index}`
+                src={images[path]()}
+                alt=`Slide ${index}`
+                style={style}
+                quality={100}
+                loading="lazy"
+            />
+        })}
         <div class="container">
-            <div class="header">
+            <div class="header" transition:animate="fade">
                 <h1>REBECCA ANAIS KAISER</h1>
             </div>
-            <div class="navigation">
+            <div class="navigation" transition:animate="fade">
                 <a href="/galleries/"
                     ><p class="hover-underline-animation">Galleries</p></a
                 >
@@ -110,4 +134,26 @@ const pageTitle = "Rebecca's Portfolio";
             </div>
         </div>
     </body>
+
+    <script>
+        let currentSlideShowImg = 0;
+        const numImages = document.getElementsByTagName('img').length;
+        let initialImg = document.getElementById(`background-img-${currentSlideShowImg}`);
+        if (initialImg !== null) {
+            initialImg.style.opacity = "100%";
+        }
+
+        function myCallback() {
+            let oldImg = document.getElementById(`background-img-${currentSlideShowImg}`);
+            if (oldImg !== null) {
+                oldImg.style.opacity = "0%";
+            }
+            currentSlideShowImg = (currentSlideShowImg + 1) % numImages;
+            let newImg = document.getElementById(`background-img-${currentSlideShowImg}`);
+            if (newImg !== null) {
+                newImg.style.opacity = "100%";
+            }
+        }
+        window.setInterval(myCallback, 3000);
+    </script>
 </html>

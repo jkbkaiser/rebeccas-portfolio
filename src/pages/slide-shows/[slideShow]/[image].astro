@@ -1,0 +1,297 @@
+---
+type Img = {
+    url: string;
+    alt: string;
+};
+
+type PathParams = {
+    slideShow: string;
+    image: string;
+};
+
+type PathProps = {
+    backgroundColor: string;
+    images: Img[];
+    totalImages: number;
+};
+
+type Path = {
+    params: PathParams;
+    props: PathProps;
+};
+
+export async function getStaticPaths() {
+    let paths: Path[] = [];
+    const allGalleries = await Astro.glob("../../galleries/*.md");
+
+    function getPagenameFromFilename(filename: string) {
+        return filename.split("/").slice(-1)[0].split(".md")[0];
+    }
+
+    for (const gallery of allGalleries) {
+        var images = gallery.frontmatter.images;
+        var imageGroups = [];
+        let m = images.length;
+        for (let i = 0; i < images.length; i += 1) {
+            if (i == 0) {
+                imageGroups.push([images[i], images[i + 1]]);
+            } else if (i == images.length - 1) {
+                imageGroups.push([images[i - 1], images[i]]);
+            } else {
+                imageGroups.push([images[i - 1], images[i], images[i + 1]]);
+            }
+        }
+
+        imageGroups.map((imageGroup, index) => {
+            paths.push({
+                params: {
+                    slideShow: getPagenameFromFilename(gallery.file),
+                    image: index.toString(),
+                },
+                props: {
+                    backgroundColor: gallery.frontmatter.backgroundColor,
+                    images: imageGroup,
+                    totalImages: images.length,
+                },
+            });
+        });
+    }
+
+    return paths;
+}
+
+import { ViewTransitions, fade } from "astro:transitions";
+import { Image as AstroImage } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import circle from "/src/assets/icon/circle.svg";
+import circleFill from "/src/assets/icon/circle-fill.svg";
+import arrowLeft from "/src/assets/icon/arrow-left.svg";
+
+const { slideShow, image } = Astro.params;
+const { backgroundColor, images, totalImages } = Astro.props;
+const imageId = parseInt(image, 10);
+
+const imageSrcs = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/images/*.{jpeg,jpg,png,gif}",
+);
+
+const leftImgPath = imageId == 0 ? "" : images[0].url;
+const showLeft = leftImgPath !== "";
+const leftImgSrc = imageSrcs[leftImgPath];
+const leftImgAlt = imageId == 0 ? "" : images[0].alt;
+
+const centerImgPath = imageId == 0 ? images[0].url : images[1].url;
+const centerImgAlt = imageId == 0 ? images[0].alt : images[1].alt;
+const centerImgSrc = imageSrcs[centerImgPath];
+
+const rightImgPath =
+    imageId != 0 && images.length == 2 ? "" : images[images.length - 1].url;
+const showRight = rightImgPath !== "";
+const rightImgAlt =
+    imageId != 0 && images.length == 2 ? "" : images[images.length - 1].alt;
+const rightImgSrc = imageSrcs[rightImgPath];
+
+console.log(showLeft)
+console.log(showRight)
+
+const galleryUrl = `/galleries/${slideShow}`;
+const baseUrl = `/slide-shows/${slideShow}`;
+
+let style = "\
+    height: 100%;\
+    width: 100%;\
+"
+---
+
+<html>
+    <head>
+        <style define:vars={{ backgroundColor }}>
+            html,
+            body {
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                left: 0;
+                right: 0;
+                padding: 0;
+                margin: 0;
+                background-color: var(--backgroundColor);
+            }
+            .navigation {
+                width: 50%;
+                height: 5vh;
+
+                position: absolute;
+                left: 50%;
+                top: 90%;
+                transform: translate(-50%, 0);
+
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+            }
+            a {
+                margin: 0 2vw;
+                height: 5vh;
+                width: 5vh;
+                padding: 0;
+                border: none;
+                background: none;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .icon_wrapper_unselected {
+                height: 50%;
+            }
+            .icon_wrapper_selected {
+                height: 75%;
+            }
+            .icon_wrapper_unselected img {
+                height: 100%;
+            }
+            .icon_wrapper_selected img {
+                height: 100%;
+            }
+            .back {
+                height: 5vh;
+                width: 5vh;
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                position: absolute;
+                left: 100px;
+                top: 90%;
+            }
+            .back img {
+                height: 5vh;
+                width: 5vh;
+            }
+            .display {
+                height: 70%;
+                width: 100%;
+
+                position: absolute;
+                left: 50%;
+                top: 45%;
+                transform: translate(-50%, -50%);
+            }
+            .display img {
+                height: 100%;
+            }
+            #image_left {
+                height: 50%;
+                width: fit-content;
+
+                position: absolute;
+                top: 50%;
+                left: 0px;
+                transform: translate(-80%, -50%);
+            }
+            #image_center {
+                height: 100%;
+                width: fit-content;
+
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+            #image_right {
+                height: 50%;
+                width: fit-content;
+
+                position: absolute;
+                top: 50%;
+                right: 0px;
+                transform: translate(80%, -50%);
+            }
+            #image_right a {
+                height: 100%;
+                width: 100%;
+            }
+            #image_left a {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+        <ViewTransitions />
+        <title>
+            {
+                (slideShow[0].toUpperCase() + slideShow.slice(1)).replace(
+                    /\-/g,
+                    " ",
+                )
+            }
+        </title>
+    </head>
+    <div class="display" transition:animate={fade({ duration: "0.2s" })}>
+        <div id="image_left">
+            {
+                showLeft ? (
+                    <a href={`${baseUrl}/${imageId - 1}`}>
+                        <AstroImage
+                            src={leftImgSrc()}
+                            alt={leftImgAlt}
+                            loading="eager"
+                            style={style}
+                        />
+                    </a>
+                ) : (
+                    <div />
+                )
+            }
+        </div>
+        <div id="image_center">
+            <AstroImage
+                src={centerImgSrc()}
+                alt={centerImgAlt}
+                loading="eager"
+                style={style}
+            />
+        </div>
+        <div id="image_right">
+            {
+                showRight ? (
+                    <a href={`${baseUrl}/${imageId + 1}`}>
+                        <AstroImage
+                            src={rightImgSrc()}
+                            alt={rightImgAlt}
+                            loading="eager"
+                            style={style}
+                        />
+                    </a>
+                ) : (
+                    <div />
+                )
+            }
+        </div>
+    </div>
+
+    <div class="back" transition:persist>
+        <a href={galleryUrl}><img src={arrowLeft.src} /></a>
+    </div>
+
+    <div class="navigation">
+        {
+            Array.from({ length: totalImages }, (_, i) => {
+                return i == imageId ? (
+                    <a href={`${baseUrl}/${i}`} class="menu_button">
+                        <div class="icon_wrapper_selected">
+                            <img src={circle.src} alt="nav" />
+                        </div>
+                    </a>
+                ) : (
+                    <a href={`${baseUrl}/${i}`} class="menu_button">
+                        <div class="icon_wrapper_unselected">
+                            <img src={circleFill.src} alt="nav" />
+                        </div>
+                    </a>
+                );
+            })
+        }
+    </div>
+</html>
