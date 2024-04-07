@@ -1,9 +1,8 @@
 ---
-import { ViewTransitions } from "astro:transitions";
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
-import "../styles/global.css";
+import "/src/styles/global.css";
 
 const pageTitle = "Rebecca's Portfolio";
 const images = import.meta.glob<{ default: ImageMetadata }>(
@@ -60,7 +59,6 @@ const imgPaths = Object.keys(images);
             p:hover {
                 font-weight: 1000;
             }
-
             body {
                 position: fixed;
                 width: 100%;
@@ -70,12 +68,10 @@ const imgPaths = Object.keys(images);
                 padding: 0;
                 margin: 0;
             }
-
             .hover-underline-animation {
                 display: inline-block;
                 position: relative;
             }
-
             .hover-underline-animation::after {
                 content: "";
                 position: absolute;
@@ -88,13 +84,11 @@ const imgPaths = Object.keys(images);
                 transform-origin: bottom right;
                 transition: transform 0.5s ease-out;
             }
-
             .hover-underline-animation:hover::after {
                 transform: scaleX(1);
                 transform-origin: bottom left;
             }
         </style>
-        <ViewTransitions />
     </head>
     <body>
         {imgPaths.map((path, index) => {
@@ -107,6 +101,7 @@ const imgPaths = Object.keys(images);
                 margin: 0%;\
                 object-fit: cover;\
                 opacity: 0;\
+                z-index: -1;\
             "
             return <Image
                 id=`background-img-${index}`
@@ -154,6 +149,7 @@ const imgPaths = Object.keys(images);
                 newImg.style.opacity = "100%";
             }
         }
+
         window.setInterval(myCallback, 3000);
     </script>
 </html>

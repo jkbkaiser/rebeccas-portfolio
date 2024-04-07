@@ -1,23 +1,28 @@
 ---
-import '../styles/global.css';
+import "/src/styles/global.css";
+import { Image } from "astro:assets";
+import aboutMe from "/src/assets/images/about_me.jpg";
 const pageTitle = "About Me";
+let style = "\
+    position: absolute;\
+    top: 0;\
+    bottom: 0;\
+    margin: 0;\
+    height: 100%;\
+    width: 100%;\
+    object-fit: cover;\
+    z-index: -1;\
+"
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{pageTitle}</title>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="viewport" content="width=device-width" />
+        <meta name="generator" content={Astro.generator} />
+        <title>{pageTitle}</title>
         <style>
-            body {
-                background-image: url('https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg');
-                background-repeat: no-repeat;
-                background-attachment: fixed;
-                background-size: cover;
-                background-position: center;
-            }
             h1 {
                 line-height: 0.9;
                 margin-right: 3%;
@@ -50,13 +55,41 @@ const pageTitle = "About Me";
                 }
             }
         </style>
-	</head>
-    <body >
+    </head>
+    <body>
         <h1>{pageTitle}</h1>
+        <Image
+            src={aboutMe}
+            style={style}
+            alt="Foto of me"
+            quality=100
+            loading="lazy"
+        />
+
         <a href="/">Home</a>
         <div class="content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent a mi vel orci porta congue vitae sit amet enim. Phasellus non dui eget mauris ornare pretium. Ut laoreet posuere augue vel fringilla. Vestibulum vel tortor et dolor dictum pretium sit amet vel elit. Sed a porta arcu. Nullam vitae sagittis odio. Fusce tristique fermentum purus, a auctor metus varius vitae.</p>
-            <p>Sed aliquet, libero id pharetra cursus, felis turpis ultricies urna, eget pretium lacus nulla at mauris. Cras sed ex faucibus, efficitur sapien id, pellentesque magna. In hac habitasse platea dictumst. Quisque non urna nec dui condimentum feugiat sit amet lacinia metus. Aenean vehicula nibh commodo tortor elementum ultricies. Maecenas nibh quam, rhoncus eu tempus vel, egestas vitae odio. Donec ac enim ut lectus ornare ullamcorper et id neque. Etiam eu sem nec mi pulvinar pretium vitae id purus. Donec et erat sed ante blandit elementum nec ac nunc. Integer convallis enim laoreet molestie placerat. Etiam porttitor pellentesque suscipit.</p>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Praesent a mi vel orci porta congue vitae sit amet enim.
+                Phasellus non dui eget mauris ornare pretium. Ut laoreet posuere
+                augue vel fringilla. Vestibulum vel tortor et dolor dictum
+                pretium sit amet vel elit. Sed a porta arcu. Nullam vitae
+                sagittis odio. Fusce tristique fermentum purus, a auctor metus
+                varius vitae.
+            </p>
+            <p>
+                Sed aliquet, libero id pharetra cursus, felis turpis ultricies
+                urna, eget pretium lacus nulla at mauris. Cras sed ex faucibus,
+                efficitur sapien id, pellentesque magna. In hac habitasse platea
+                dictumst. Quisque non urna nec dui condimentum feugiat sit amet
+                lacinia metus. Aenean vehicula nibh commodo tortor elementum
+                ultricies. Maecenas nibh quam, rhoncus eu tempus vel, egestas
+                vitae odio. Donec ac enim ut lectus ornare ullamcorper et id
+                neque. Etiam eu sem nec mi pulvinar pretium vitae id purus.
+                Donec et erat sed ante blandit elementum nec ac nunc. Integer
+                convallis enim laoreet molestie placerat. Etiam porttitor
+                pellentesque suscipit.
+            </p>
         </div>
         <div class="credits">
             <p>Foto by: Elias Bergman</p>

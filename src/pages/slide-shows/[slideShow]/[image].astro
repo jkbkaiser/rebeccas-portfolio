@@ -31,7 +31,6 @@ export async function getStaticPaths() {
     for (const gallery of allGalleries) {
         var images = gallery.frontmatter.images;
         var imageGroups = [];
-        let m = images.length;
         for (let i = 0; i < images.length; i += 1) {
             if (i == 0) {
                 imageGroups.push([images[i], images[i + 1]]);
@@ -91,16 +90,14 @@ const rightImgAlt =
     imageId != 0 && images.length == 2 ? "" : images[images.length - 1].alt;
 const rightImgSrc = imageSrcs[rightImgPath];
 
-console.log(showLeft)
-console.log(showRight)
-
 const galleryUrl = `/galleries/${slideShow}`;
 const baseUrl = `/slide-shows/${slideShow}`;
 
-let style = "\
+let style =
+    "\
     height: 100%;\
     width: 100%;\
-"
+";
 ---
 
 <html>
