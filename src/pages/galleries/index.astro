@@ -1,6 +1,15 @@
 ---
+import { Image } from "astro:assets";
+
 import GalleryDisplay from "../../components/GalleryDisplay.astro";
 import "../../styles/global.css";
+
+import gallery_image_born_never_asked from "/src/assets/images/galleries-born,neverasked.jpg";
+import gallery_image_eggum from "/src/assets/images/galleries-eggum.jpg";
+import gallery_image_veterinary_clinic from "/src/assets/images/galleries-veterinaryclinic.jpg";
+import gallery_image_tree_structures from "/src/assets/images/galleries-treestructures.jpg";
+import gallery_image_how_to_portray_sadness from "/src/assets/images/galleries-howtoportraysadness.jpg";
+import gallery_image_micromose from "/src/assets/images/galleries-micromose.jpg";
 
 const pageTitle = "Galleries";
 ---
@@ -68,41 +77,73 @@ const pageTitle = "Galleries";
     </head>
     <body>
         <a href="/">Home</a>
-        <h1>{pageTitle}</h1>
+        <h1>
+            {pageTitle}
+        </h1>
         <div class="container">
             <div class="gallery_row_top">
                 <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
                     galleryUrl="/galleries/born-never-asked"
                     lines={["Born,", "never asked"]}
-                />
-                <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
-                    galleryUrl="/"
-                    lines={["Born,", "never asked"]}
-                />
-                <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
-                    galleryUrl="/"
-                    lines={["Born,", "never asked"]}
-                />
+                >
+                    <Image
+                        src={gallery_image_born_never_asked}
+                        alt="Gallery 'Born, never asked' Cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
+                <GalleryDisplay galleryUrl="/" lines={["Eggum"]}>
+                    <Image
+                        src={gallery_image_eggum}
+                        alt="Gallery 'Eggum' Cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
+                <GalleryDisplay galleryUrl="/" lines={["Veterinary", "clinic"]}>
+                    <Image
+                        src={gallery_image_veterinary_clinic}
+                        alt="Gallery 'Veterinary clinic' cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
             </div>
             <div class="gallery_row_bot">
+                <GalleryDisplay galleryUrl="/" lines={["Tree", "structures"]}>
+                    <Image
+                        src={gallery_image_tree_structures}
+                        alt="Gallery 'Tree structure' Cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
                 <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
                     galleryUrl="/"
-                    lines={["Born,", "never asked"]}
-                />
-                <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
-                    galleryUrl="/"
-                    lines={["Born,", "never asked"]}
-                />
-                <GalleryDisplay
-                    galleryImgSrc={"https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg"}
-                    galleryUrl="/"
-                    lines={["Born,", "never asked"]}
-                />
+                    lines={["How to portray", "sadness?"]}
+                >
+                    <Image
+                        src={gallery_image_how_to_portray_sadness}
+                        alt="Gallery 'How to portray sadness?' Cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
+                <GalleryDisplay galleryUrl="/" lines={["Micromose"]}>
+                    <Image
+                        src={gallery_image_micromose}
+                        alt="Gallery 'Micromose' cover"
+                        style="height: 100%; width: 100%; object-fit: cover;"
+                        quality={10}
+                        loading="eager"
+                    />
+                </GalleryDisplay>
             </div>
         </div>
     </body>

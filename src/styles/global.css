@@ -8,6 +8,10 @@
   src: url('/fonts/JetBrainsMono-Regular.ttf');
 }
 
+body {
+    margin: 0;
+}
+
 h1 {
     font-family: 'Bebas';
     text-transform: uppercase;

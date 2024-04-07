@@ -1,73 +1,78 @@
 ---
-import "../styles/global.css";
-const { frontmatter } = Astro.props;
-const row_size = frontmatter.row_size;
-const background_color = frontmatter.background_color;
+import "/src/styles/global.css";
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 
-type Image = {
-    url: string;
-    alt: string;
-};
+const { frontmatter } = Astro.props;
+const rowSize = frontmatter.rowSize;
+const backgroundColor = frontmatter.backgroundColor;
+const imagePaths = frontmatter.images;
+
+const images = import.meta.glob<{ default: ImageMetadata }>(
+    "/src/assets/images/*.{jpeg,jpg,png,gif}",
+);
 
 // Map the images into columns.
-const columns: [Image, number][][] = [];
-for (let i = 0; i < row_size; i += 1) {
+const columns: [any, number][][] = [];
+for (let i = 0; i < rowSize; i += 1) {
     columns.push([]);
 }
 
-for (let i = 0; i < frontmatter.images.length; i += 1) {
-    columns[i % row_size].push([frontmatter.images[i], i]);
+for (let i = 0; i < imagePaths.length; i += 1) {
+    columns[i % rowSize].push([images[imagePaths[i].url], i]);
 }
 
-function get_pagename_from_filename(filename: string) {
+function getPagenameFromFilename(filename: string) {
     return filename.split("/").slice(-1)[0].split(".md")[0];
 }
 
-const page_name = get_pagename_from_filename(frontmatter.file);
-const slide_show_url = `/slide-shows/${page_name}`;
+const pageName = getPagenameFromFilename(frontmatter.file);
+const slideShowUrl = `/slide-shows/${pageName}`;
 ---
 
 <html>
-    <style define:vars={{ background_color }}>
-        html {
-            background-color: var(--background_color);
-        }
-        .heading :global(h1) {
-            font-size: 10vh;
-            text-align: right;
-        }
-        .heading :global(p) {
-            font-family: "JetBrains";
-            font-size: 1.5em;
-            height: fit-content;
-            width: 50%;
-        }
-        .heading {
-            display: flex;
-            flex-direction: row-reverse;
-            justify-content: space-evenly;
-            align-items: center;
-        }
-        .gallery {
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            align-items: start;
-        }
-        .gallery_column {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-evenly;
-            width: 100%;
-        }
-        .gallery_img {
-            margin: 10%;
-        }
-        img {
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+    <head>
+        <style define:vars={{ backgroundColor }}>
+            html {
+                background-color: var(--backgroundColor);
+            }
+            .heading :global(h1) {
+                font-size: 10vh;
+                text-align: right;
+            }
+            .heading :global(p) {
+                font-family: "JetBrains";
+                font-size: 1.5em;
+                height: fit-content;
+                width: 50%;
+            }
+            .heading {
+                display: flex;
+                flex-direction: row-reverse;
+                justify-content: space-evenly;
+                align-items: center;
+            }
+            .gallery {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: start;
+            }
+            .gallery_column {
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly;
+                width: 100%;
+            }
+            .gallery_img {
+                margin: 10%;
+            }
+            img {
+                height: 100%;
+                width: 100%;
+            }
+        </style>
+    </head>
 
     <div class="heading">
         <slot />
@@ -75,17 +80,26 @@ const slide_show_url = `/slide-shows/${page_name}`;
 
     <div class="gallery">
         {
-            columns.map((images) => (
-                <div class="gallery_column">
-                    {images.map(([img, index]) => (
-                        <div class="gallery_img">
-                            <a href={`${slide_show_url}/${index}`}>
-                                <img src={img.url} />
-                            </a>
-                        </div>
-                    ))}
-                </div>
-            ))
+            columns.map((images) => {
+                return (
+                    <div class="gallery_column">
+                        {images.map(([image, index]) => {
+                            return (
+                                <div class="gallery_img">
+                                    <a href={`${slideShowUrl}/${index}`}>
+                                        <Image
+                                            src={image()}
+                                            alt="gallery image"
+                                            quality={10}
+                                            loading="eager"
+                                        />
+                                    </a>
+                                </div>
+                            );
+                        })}
+                    </div>
+                );
+            })
         }
     </div>
 

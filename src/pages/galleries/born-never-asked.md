@@ -1,30 +1,29 @@
 ---
 layout: './../../layouts/Gallery.astro'
-row_size: 2
-background_color: '#ffe5e5'
-slide_show_style: 'default'
+rowSize: 2
+backgroundColor: '#ffe5e5'
+slideShowStyle: 'default'
 images: [
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: '/src/assets/images/cabin.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-eggum.jpg',
+        url: '/src/assets/images/galleries-born,neverasked.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-micromose.jpg',
+        url: '/src/assets/images/galleries-eggum.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/galleries/galleries-treestructures.jpg',
+        url: '/src/assets/images/galleries-veterinaryclinic.jpg',
         alt: 'The full Astro logo.'
     },
     {
-        url: 'https://storage.googleapis.com/rebeccas_portfolio/images/about/background.jpg',
+        url: '/src/assets/images/galleries-treestructures.jpg',
         alt: 'The full Astro logo.'
     },
-
 ]
 ---
 
